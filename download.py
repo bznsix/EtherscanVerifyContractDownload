@@ -59,6 +59,14 @@ def get_contract_source_code(api_url, api_key, contract_address, save_folder):
                 for item in list(sources_code.keys()):
                     sources += sources_code[item]['content'] + "\n\n"
                 source_code = sources
+            elif source_code.startswith("{\"") and source_code.endswith("}}"):
+                print(f'处理到特殊格式多文件合约：{contract_address}')
+                data = json.loads(source_code)
+                sources_code = data
+                sources = ''
+                for item in sources_code:
+                    sources += sources_code[item]['content'] + "\n\n"
+                source_code = sources
                 
             write_string_to_file(source_code, contract_address, save_folder)
             print(f"合约源代码已成功保存：{contract_address}")
